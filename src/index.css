@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth }
+body { @apply text-pit-100 antialiased }
+
+/* The grid behind everything: a faint field-tile pattern. */
+.field-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.card { @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm; }
+.btn { @apply inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors; }
+.btn-primary { @apply btn bg-spark-500 text-pit-950 hover:bg-spark-400; }
+.btn-ghost { @apply btn border border-white/15 text-pit-100 hover:bg-white/10; }
+.input { @apply w-full rounded-xl border border-white/15 bg-pit-900/70 px-3 py-2.5 text-sm text-pit-100 placeholder:text-pit-100/40 focus:outline-none focus:ring-2 focus:ring-spark-500/60; }
+.label { @apply mb-1 block text-xs font-semibold uppercase tracking-wide text-pit-100/60; }
+.eyebrow { @apply text-xs font-bold uppercase tracking-[.2em] text-spark-400; }
