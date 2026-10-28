@@ -25,7 +25,7 @@ export default function Home() {
           <h1 className="text-4xl font-extrabold leading-tight tracking-tight md:text-5xl">
             Every FTC team deserves someone to ask.
           </h1>
-          <p className="mt-4 text-lg text-pit-100/75 leading-relaxed">
+          <p className="mt-4 text-lg text-ink-600 leading-relaxed">
             OpenPit is an online mentor for FIRST Tech Challenge teams that are starting with no coach, no budget and no team nearby.
             Ask a question, book a review, read the manual in your language, and learn how to build a team that lasts.
           </p>
@@ -33,7 +33,7 @@ export default function Home() {
             <Link to="/mentor" className="btn-primary">Ask the mentor <ArrowRight size={16} /></Link>
             <Link to="/learn" className="btn-ghost">Start a team</Link>
           </div>
-          <p className="mt-4 text-xs text-pit-100/50">Free. Run by students of FTC Team 7196. English today, more languages on the roadmap.</p>
+          <p className="mt-4 text-xs text-ink-400">Free. Run by students of FTC Team 7196. English today, more languages on the roadmap.</p>
         </div>
         <div className="card p-6">
           <p className="eyebrow mb-3">Why teams never start</p>
@@ -43,7 +43,7 @@ export default function Home() {
                 <span className="text-2xl leading-none">{b.emoji}</span>
                 <div>
                   <p className="font-bold">{b.title}</p>
-                  <p className="text-sm text-pit-100/70 leading-relaxed">{b.text}</p>
+                  <p className="text-sm text-ink-600 leading-relaxed">{b.text}</p>
                 </div>
               </div>
             ))}
@@ -56,11 +56,11 @@ export default function Home() {
         <h2 className="text-2xl font-extrabold tracking-tight">Six things, all free</h2>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {OFFERS.map(({ to, icon: Icon, title, text }) => (
-            <Link key={to} to={to} className="card group p-5 transition-colors hover:border-spark-500/50 hover:bg-white/10">
-              <div className="mb-3 grid h-10 w-10 place-items-center rounded-xl bg-spark-500/15 text-spark-400"><Icon size={20} /></div>
+            <Link key={to} to={to} className="card group p-5 transition-colors hover:border-honey-400 hover:bg-honey-100">
+              <div className="mb-3 grid h-10 w-10 place-items-center rounded-xl bg-honey-100 text-honey-600"><Icon size={20} /></div>
               <p className="font-bold">{title}</p>
-              <p className="mt-1 text-sm text-pit-100/70 leading-relaxed">{text}</p>
-              <p className="mt-3 text-xs font-semibold text-spark-400 opacity-0 transition-opacity group-hover:opacity-100">Open →</p>
+              <p className="mt-1 text-sm text-ink-600 leading-relaxed">{text}</p>
+              <p className="mt-3 text-xs font-semibold text-honey-600 opacity-0 transition-opacity group-hover:opacity-100">Open →</p>
             </Link>
           ))}
         </div>
@@ -71,7 +71,7 @@ export default function Home() {
           <div className="md:col-span-2">
             <p className="eyebrow mb-2">Who we are</p>
             <h2 className="text-2xl font-extrabold tracking-tight">Students who started a second team, and want to start more</h2>
-            <p className="mt-3 text-pit-100/75 leading-relaxed">
+            <p className="mt-3 text-ink-600 leading-relaxed">
               We are FTC Team 7196, Everything That's Radical, from Pleasant Valley High School in Iowa. This year we started and mentored a brand-new team,
               38350 Prime Suspects, and built the team-management app both teams run on. OpenPit is the same idea pointed outward:
               the help we gave one team, available to any team.

@@ -56,7 +56,7 @@ export default function Translate() {
         </div>
         <div className="card p-4">
           <label className="label">{target || 'Translation'}</label>
-          <div className="min-h-[300px] whitespace-pre-wrap text-sm leading-relaxed">{out || <span className="text-pit-100/40">The translation shows here.</span>}</div>
+          <div className="min-h-[300px] whitespace-pre-wrap text-sm leading-relaxed">{out || <span className="text-ink-300">The translation shows here.</span>}</div>
         </div>
       </div>
     </div>

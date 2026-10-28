@@ -3,19 +3,17 @@
 @tailwind utilities;
 
 html { scroll-behavior: smooth }
-body { @apply text-pit-100 antialiased }
+body { @apply bg-white text-ink-900 antialiased }
 
-/* The grid behind everything: a faint field-tile pattern. */
+/* A faint honeycomb behind everything, flat-top cells like the BIOBUZZ comb. */
 .field-grid {
-  background-image:
-    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-  background-size: 48px 48px;
+  background-color: #fffdf5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='52' viewBox='0 0 90 51.96'%3E%3Cg fill='none' stroke='%23F2B705' stroke-opacity='0.18' stroke-width='1.2'%3E%3Cpolygon points='30,25.98 15,51.96 -15,51.96 -30,25.98 -15,0 15,0'/%3E%3Cpolygon points='120,25.98 105,51.96 75,51.96 60,25.98 75,0 105,0'/%3E%3Cpolygon points='75,51.96 60,77.94 30,77.94 15,51.96 30,25.98 60,25.98'/%3E%3Cpolygon points='75,0 60,25.98 30,25.98 15,0 30,-25.98 60,-25.98'/%3E%3C/g%3E%3C/svg%3E");
 }
-.card { @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm; }
+.card { @apply rounded-2xl border border-honey-200 bg-white/90 shadow-sm backdrop-blur-sm; }
 .btn { @apply inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors; }
-.btn-primary { @apply btn bg-spark-500 text-pit-950 hover:bg-spark-400; }
-.btn-ghost { @apply btn border border-white/15 text-pit-100 hover:bg-white/10; }
-.input { @apply w-full rounded-xl border border-white/15 bg-pit-900/70 px-3 py-2.5 text-sm text-pit-100 placeholder:text-pit-100/40 focus:outline-none focus:ring-2 focus:ring-spark-500/60; }
-.label { @apply mb-1 block text-xs font-semibold uppercase tracking-wide text-pit-100/60; }
-.eyebrow { @apply text-xs font-bold uppercase tracking-[.2em] text-spark-400; }
+.btn-primary { @apply btn bg-honey-400 text-ink-900 hover:bg-honey-300 disabled:opacity-50; }
+.btn-ghost { @apply btn border border-honey-300 bg-white text-ink-900 hover:bg-honey-50; }
+.input { @apply w-full rounded-xl border border-honey-300 bg-white px-3 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:outline-none focus:ring-2 focus:ring-honey-400; }
+.label { @apply mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-500; }
+.eyebrow { @apply text-xs font-bold uppercase tracking-[.2em] text-honey-600; }

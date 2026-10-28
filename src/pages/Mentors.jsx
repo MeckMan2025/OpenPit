@@ -37,9 +37,9 @@ export default function Mentors() {
       </PageHead>
 
       <div className="mb-4 flex flex-wrap gap-2">
-        <button onClick={() => setFilter('all')} className={`btn ${filter === 'all' ? 'bg-white/15' : 'border border-white/15 hover:bg-white/10'}`}>Everyone</button>
+        <button onClick={() => setFilter('all')} className={`btn ${filter === 'all' ? 'bg-honey-200' : 'border border-honey-300 hover:bg-honey-100'}`}>Everyone</button>
         {Object.entries(AREAS).map(([id, a]) => (
-          <button key={id} onClick={() => setFilter(id)} className={`btn ${filter === id ? 'bg-white/15' : 'border border-white/15 hover:bg-white/10'}`}>{a.emoji} {a.name}</button>
+          <button key={id} onClick={() => setFilter(id)} className={`btn ${filter === id ? 'bg-honey-200' : 'border border-honey-300 hover:bg-honey-100'}`}>{a.emoji} {a.name}</button>
         ))}
       </div>
 
@@ -50,15 +50,15 @@ export default function Mentors() {
               <div className="flex items-start gap-3">
                 <Avatar name={m.name} photo={m.photo} />
                 <div className="min-w-0">
-                  <p className="font-bold">{m.name} <span className="text-xs font-semibold text-pit-100/50">· Team {m.team}</span></p>
-                  <p className="text-xs text-pit-100/60">{m.role}</p>
+                  <p className="font-bold">{m.name} <span className="text-xs font-semibold text-ink-400">· Team {m.team}</span></p>
+                  <p className="text-xs text-ink-500">{m.role}</p>
                   <div className="mt-1.5 flex flex-wrap gap-1">
-                    {m.areas.map((a) => <span key={a} className="rounded-full bg-spark-500/15 px-2 py-0.5 text-[11px] font-semibold text-spark-400">{AREAS[a].emoji} {AREAS[a].name}</span>)}
+                    {m.areas.map((a) => <span key={a} className="rounded-full bg-honey-100 px-2 py-0.5 text-[11px] font-semibold text-honey-600">{AREAS[a].emoji} {AREAS[a].name}</span>)}
                   </div>
                 </div>
               </div>
-              <p className="mt-3 text-sm text-pit-100/70 leading-relaxed">{m.bio}</p>
-              <button onClick={() => { setForm({ ...form, mentor: m.id, area: m.areas[0] }); document.getElementById('ask')?.scrollIntoView({ behavior: 'smooth' }) }} className="mt-3 text-xs font-bold text-spark-400 hover:text-spark-300">Ask {m.name} →</button>
+              <p className="mt-3 text-sm text-ink-600 leading-relaxed">{m.bio}</p>
+              <button onClick={() => { setForm({ ...form, mentor: m.id, area: m.areas[0] }); document.getElementById('ask')?.scrollIntoView({ behavior: 'smooth' }) }} className="mt-3 text-xs font-bold text-honey-600 hover:text-honey-900">Ask {m.name} →</button>
             </div>
           ))}
         </div>

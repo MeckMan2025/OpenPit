@@ -44,8 +44,8 @@ export default function Meetings() {
             [ClipboardList, 'After', 'You get a short written summary of what we suggested, and a two-question feedback form so we get better at this.'],
           ].map(([Icon, t, d]) => (
             <div key={t} className="card flex gap-3 p-4">
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-spark-500/15 text-spark-400"><Icon size={20} /></div>
-              <div><p className="font-bold">{t}</p><p className="text-sm text-pit-100/70 leading-relaxed">{d}</p></div>
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-honey-100 text-honey-600"><Icon size={20} /></div>
+              <div><p className="font-bold">{t}</p><p className="text-sm text-ink-600 leading-relaxed">{d}</p></div>
             </div>
           ))}
         </div>
@@ -61,13 +61,13 @@ export default function Meetings() {
           <div>
             <label className="label">What should we look at?</label>
             <div className="flex flex-wrap gap-2">
-              {TOPICS.map((t) => <button type="button" key={t} onClick={() => setF({ ...f, topic: t })} className={`btn ${f.topic === t ? 'bg-spark-500 text-pit-950' : 'border border-white/15 hover:bg-white/10'}`}>{t}</button>)}
+              {TOPICS.map((t) => <button type="button" key={t} onClick={() => setF({ ...f, topic: t })} className={`btn ${f.topic === t ? 'bg-honey-400 text-ink-900' : 'border border-honey-300 hover:bg-honey-100'}`}>{t}</button>)}
             </div>
           </div>
           <div>
             <label className="label">When are you usually free? (pick any)</label>
             <div className="flex flex-wrap gap-2">
-              {TIMES.map((t) => <button type="button" key={t} onClick={() => toggle(t)} className={`btn ${f.times.includes(t) ? 'bg-white/20' : 'border border-white/15 hover:bg-white/10'}`}>{t}</button>)}
+              {TIMES.map((t) => <button type="button" key={t} onClick={() => toggle(t)} className={`btn ${f.times.includes(t) ? 'bg-honey-200' : 'border border-honey-300 hover:bg-honey-100'}`}>{t}</button>)}
             </div>
           </div>
           <div><label className="label">Anything we should know first</label><textarea className="input min-h-[90px]" value={f.notes} onChange={(e) => setF({ ...f, notes: e.target.value })} placeholder="Links to your code, photos, what you're stuck on." /></div>
