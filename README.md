@@ -6,13 +6,15 @@ Run by students of FTC Team 7196, Everything That's Radical (Bettendorf, Iowa). 
 
 ## What's in it
 
-- **AI Mentor** — ask anything about programming, build or business; answers via a Supabase edge function (`op-mentor`) that calls Claude.
-- **Mentors** — the directory (`src/data/mentors.js`) and a question form that writes to `op_questions`.
-- **Monthly Review** — request a video review; writes to `op_meeting_requests`.
-- **Translate** — paste manual text, get it in your language (same edge function, `mode: 'translate'`).
-- **Learn** — tutorial tracks (`src/data/tutorials.js`) and the first-weeks checklist.
-- **Fund a Team** — cost breakdown (`src/data/costs.js`) and the fundraiser link.
-- **Roadmap** — the season plan (`src/data/roadmap.js`).
+- **Home** — what the program does, how it works, and the six-month goals (labelled as goals, not results).
+- **AI Mentorship** — a coaching chat through the `op-mentor` edge function, which calls Claude. Two feedback questions under every answer go to `op_feedback`. The page asks the function whether it's switched on and says "prototype" when it isn't.
+- **Find a Mentor** — a mentorship request form (writes to `op_meeting_requests`). No mentors are listed until `MENTORS_CONFIRMED` in `src/data/program.js` is true.
+- **Learning Resources** — the library in `src/data/resources.js`, with search and filters. Add a resource there; check the link loads and say who publishes it.
+- **Team Dashboard** — phase 2; the page says what's coming.
+- **About** — who we are, how the goals are measured, privacy, and a site feedback form (`op_feedback`).
+- Also kept: **Translate**, **Fund a Team** and **Roadmap** (linked from the footer and About).
+
+Database setup: run `supabase/openpit.sql`, then `supabase/openpit_phase1.sql`. Read requests and feedback in the Supabase dashboard; the public can only insert.
 
 ## Run it
 

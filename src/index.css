@@ -11,9 +11,18 @@ body { @apply bg-white text-ink-900 antialiased }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='52' viewBox='0 0 90 51.96'%3E%3Cg fill='none' stroke='%23F2B705' stroke-opacity='0.18' stroke-width='1.2'%3E%3Cpolygon points='30,25.98 15,51.96 -15,51.96 -30,25.98 -15,0 15,0'/%3E%3Cpolygon points='120,25.98 105,51.96 75,51.96 60,25.98 75,0 105,0'/%3E%3Cpolygon points='75,51.96 60,77.94 30,77.94 15,51.96 30,25.98 60,25.98'/%3E%3Cpolygon points='75,0 60,25.98 30,25.98 15,0 30,-25.98 60,-25.98'/%3E%3C/g%3E%3C/svg%3E");
 }
 .card { @apply rounded-2xl border border-honey-200 bg-white/90 shadow-sm backdrop-blur-sm; }
-.btn { @apply inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors; }
+.btn { @apply inline-flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors; }
 .btn-primary { @apply btn bg-honey-400 text-ink-900 hover:bg-honey-300 disabled:opacity-50; }
 .btn-ghost { @apply btn border border-honey-300 bg-white text-ink-900 hover:bg-honey-50; }
 .input { @apply w-full rounded-xl border border-honey-300 bg-white px-3 py-2.5 text-sm text-ink-900 placeholder:text-ink-300 focus:outline-none focus:ring-2 focus:ring-honey-400; }
 .label { @apply mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-500; }
 .eyebrow { @apply text-xs font-bold uppercase tracking-[.2em] text-honey-600; }
+.chip { @apply inline-flex items-center gap-1.5 rounded-xl border border-honey-300 bg-white px-3 py-2 text-sm font-semibold text-ink-600 transition-colors hover:bg-honey-50; }
+.chip-on { @apply border-honey-400 bg-honey-200 text-ink-900 hover:bg-honey-200; }
+.tag { @apply inline-flex items-center rounded-full bg-honey-100 px-2 py-0.5 text-[11px] font-semibold text-honey-900; }
+.section-title { @apply text-2xl font-extrabold tracking-tight md:text-3xl; }
+
+/* Keyboard users see where they are; mouse clicks don't leave rings behind. */
+:focus-visible { outline: 3px solid #C98F00; outline-offset: 2px; border-radius: 10px; }
+.input:focus-visible { outline: none; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } * { transition: none !important } }

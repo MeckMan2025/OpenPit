@@ -1,98 +1,131 @@
 import { useState } from 'react'
-import { Send } from 'lucide-react'
+import { Send, Clock, Inbox, ShieldCheck } from 'lucide-react'
+import { MENTOR_CATEGORIES, MENTORS_CONFIRMED } from '../data/program'
 import { MENTORS, AREAS } from '../data/mentors'
 import { supabase } from '../lib/supabase'
 import PageHead from '../components/PageHead'
 import Avatar from '../components/Avatar'
 import Notice from '../components/Notice'
 
+const TIMES = ['Weekday afternoons', 'Weekday evenings', 'Saturday', 'Sunday']
+const EMPTY = { team: '', country: '', category: '', challenge: '', attempted: '', times: [], timeNote: '', email: '', adult: false }
+
+const STEPS = [
+  [Inbox, 'We read every request', 'A student on our team reads it and replies by email within about a week.'],
+  [Clock, 'About 20 minutes', 'One focused video session on your challenge, with a mentor who knows that area.'],
+  [ShieldCheck, 'An adult joins', 'A coach or other adult from your team should be on the call. We never meet students alone.'],
+]
+
+function Field({ label, hint, children }) {
+  return (
+    <label className="block">
+      <span className="label">{label}</span>
+      {children}
+      {hint && <span className="mt-1 block text-xs text-ink-500">{hint}</span>}
+    </label>
+  )
+}
+
 export default function Mentors() {
-  const [filter, setFilter] = useState('all')
-  const [form, setForm] = useState({ mentor: '', team: '', email: '', area: 'programming', question: '' })
-  const [state, setState] = useState({ busy: false, done: false, error: '' })
-  const shown = filter === 'all' ? MENTORS : MENTORS.filter((m) => m.areas.includes(filter))
+  const [f, setF] = useState(EMPTY)
+  const [s, setS] = useState({ busy: false, done: false, error: '' })
+  const set = (k) => (e) => setF({ ...f, [k]: e.target.type === 'checkbox' ? e.target.checked : e.target.value })
+  const toggle = (t) => setF({ ...f, times: f.times.includes(t) ? f.times.filter((x) => x !== t) : [...f.times, t] })
 
   const submit = async (e) => {
     e.preventDefault()
-    if (!form.question.trim() || !form.email.trim()) return
-    setState({ busy: true, done: false, error: '' })
+    if (!f.category) return setS({ busy: false, done: false, error: 'Pick what you need help with.' })
+    setS({ busy: true, done: false, error: '' })
     try {
       if (!supabase) throw new Error('Not connected yet.')
-      const { error } = await supabase.from('op_questions').insert({
-        mentor_id: form.mentor || null, team: form.team.trim() || null, email: form.email.trim(), area: form.area, question: form.question.trim(),
+      const { error } = await supabase.from('op_meeting_requests').insert({
+        team: f.team.trim(), country: f.country.trim(), email: f.email.trim(),
+        topic: f.category, challenge: f.challenge.trim(), attempted: f.attempted.trim() || null,
+        times: f.times, notes: f.timeNote.trim() || null, adult_aware: f.adult,
       })
       if (error) throw error
-      setState({ busy: false, done: true, error: '' })
-      setForm({ mentor: '', team: '', email: '', area: 'programming', question: '' })
+      setS({ busy: false, done: true, error: '' })
+      setF(EMPTY)
     } catch (err) {
-      setState({ busy: false, done: false, error: err.message || 'Something went wrong. Try again.' })
+      setS({ busy: false, done: false, error: err.message || 'Something went wrong. Try again.' })
     }
   }
 
   return (
     <div>
-      <PageHead eyebrow="Mentors" title="Real people, one message away.">
-        Our team's leads, listed by what they're good at. Pick the person who fits, or leave it to us and we'll route it.
-        You'll get an answer by email, usually within a few days. (English only for now.)
+      <PageHead eyebrow="Find a Mentor" title="Get time with a person who has done it.">
+        Tell us what your team is stuck on and we'll set up a 20-minute session with someone who knows that area.
+        We're recruiting mentors now, so for the moment this is a request form: every request helps us find the right people first.
       </PageHead>
 
-      <div className="mb-4 flex flex-wrap gap-2">
-        <button onClick={() => setFilter('all')} className={`btn ${filter === 'all' ? 'bg-honey-200' : 'border border-honey-300 hover:bg-honey-100'}`}>Everyone</button>
-        {Object.entries(AREAS).map(([id, a]) => (
-          <button key={id} onClick={() => setFilter(id)} className={`btn ${filter === id ? 'bg-honey-200' : 'border border-honey-300 hover:bg-honey-100'}`}>{a.emoji} {a.name}</button>
-        ))}
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
-          {shown.map((m) => (
-            <div key={m.id} className="card p-4">
-              <div className="flex items-start gap-3">
-                <Avatar name={m.name} photo={m.photo} />
-                <div className="min-w-0">
-                  <p className="font-bold">{m.name} <span className="text-xs font-semibold text-ink-400">· Team {m.team}</span></p>
-                  <p className="text-xs text-ink-500">{m.role}</p>
-                  <div className="mt-1.5 flex flex-wrap gap-1">
-                    {m.areas.map((a) => <span key={a} className="rounded-full bg-honey-100 px-2 py-0.5 text-[11px] font-semibold text-honey-600">{AREAS[a].emoji} {AREAS[a].name}</span>)}
-                  </div>
-                </div>
+      {MENTORS_CONFIRMED && (
+        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {MENTORS.map((m) => (
+            <div key={m.id} className="card flex gap-3 p-4">
+              <Avatar name={m.name} photo={m.photo} />
+              <div className="min-w-0">
+                <p className="font-bold">{m.name}</p>
+                <div className="mt-1 flex flex-wrap gap-1">{m.areas.map((a) => <span key={a} className="tag">{AREAS[a].name}</span>)}</div>
               </div>
-              <p className="mt-3 text-sm text-ink-600 leading-relaxed">{m.bio}</p>
-              <button onClick={() => { setForm({ ...form, mentor: m.id, area: m.areas[0] }); document.getElementById('ask')?.scrollIntoView({ behavior: 'smooth' }) }} className="mt-3 text-xs font-bold text-honey-600 hover:text-honey-900">Ask {m.name} →</button>
             </div>
           ))}
         </div>
+      )}
 
-        <form id="ask" onSubmit={submit} className="card h-fit space-y-3 p-4">
-          <p className="eyebrow">Send a question</p>
-          <div>
-            <label className="label">To</label>
-            <select className="input" value={form.mentor} onChange={(e) => setForm({ ...form, mentor: e.target.value })}>
-              <option value="">Whoever fits best</option>
-              {MENTORS.map((m) => <option key={m.id} value={m.id}>{m.name} — {m.role.split('·')[0].trim()}</option>)}
-            </select>
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="space-y-4">
+          {STEPS.map(([Icon, t, d]) => (
+            <div key={t} className="card flex gap-3 p-4">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-honey-100 text-honey-600"><Icon size={20} aria-hidden="true" /></div>
+              <div><p className="font-bold">{t}</p><p className="text-sm text-ink-600 leading-relaxed">{d}</p></div>
+            </div>
+          ))}
+          <p className="px-1 text-xs text-ink-500 leading-relaxed">
+            We only ask for what we need to help. Please don't include students' full names, ages or phone numbers.
+            Requests are private: only our team can read them.
+          </p>
+        </div>
+
+        <form onSubmit={submit} className="card space-y-4 p-5 lg:col-span-2" aria-labelledby="req-title">
+          <h2 id="req-title" className="text-lg font-extrabold">Request mentorship</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Team name or number"><input className="input" required maxLength={200} value={f.team} onChange={set('team')} placeholder="e.g. 12345, or a new team" /></Field>
+            <Field label="Country" hint="So we pick a time that works in your time zone."><input className="input" required maxLength={100} value={f.country} onChange={set('country')} /></Field>
           </div>
-          <div>
-            <label className="label">About</label>
-            <select className="input" value={form.area} onChange={(e) => setForm({ ...form, area: e.target.value })}>
-              {Object.entries(AREAS).map(([id, a]) => <option key={id} value={id}>{a.emoji} {a.name}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="label">Your team (number or name, optional)</label>
-            <input className="input" value={form.team} onChange={(e) => setForm({ ...form, team: e.target.value })} placeholder="e.g. 12345, or 'starting one in Nairobi'" />
-          </div>
-          <div>
-            <label className="label">Email for the answer</label>
-            <input className="input" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@school.org" />
-          </div>
-          <div>
-            <label className="label">Your question</label>
-            <textarea className="input min-h-[120px]" required value={form.question} onChange={(e) => setForm({ ...form, question: e.target.value })} placeholder="What's happening, what you've tried, what you want to happen." />
-          </div>
-          {state.error && <Notice kind="warn">{state.error}</Notice>}
-          {state.done && <Notice>Sent. A mentor will reply by email.</Notice>}
-          <button className="btn-primary w-full justify-center" disabled={state.busy}><Send size={16} /> {state.busy ? 'Sending…' : 'Send to a mentor'}</button>
+          <fieldset>
+            <legend className="label">What do you need help with?</legend>
+            <div className="flex flex-wrap gap-2">
+              {MENTOR_CATEGORIES.map((c) => (
+                <button type="button" key={c.id} aria-pressed={f.category === c.id} onClick={() => setF({ ...f, category: c.id })}
+                  className={`chip ${f.category === c.id ? 'chip-on' : ''}`}>{c.emoji} {c.name}</button>
+              ))}
+            </div>
+          </fieldset>
+          <Field label="Describe the challenge" hint="What's happening, and what you want to happen instead.">
+            <textarea className="input min-h-[110px]" required minLength={10} maxLength={4000} value={f.challenge} onChange={set('challenge')} />
+          </Field>
+          <Field label="What has your team already tried?" hint="Optional, but it helps the mentor skip what you've ruled out.">
+            <textarea className="input min-h-[80px]" maxLength={4000} value={f.attempted} onChange={set('attempted')} />
+          </Field>
+          <fieldset>
+            <legend className="label">When is your team usually free?</legend>
+            <div className="flex flex-wrap gap-2">
+              {TIMES.map((t) => (
+                <button type="button" key={t} aria-pressed={f.times.includes(t)} onClick={() => toggle(t)} className={`chip ${f.times.includes(t) ? 'chip-on' : ''}`}>{t}</button>
+              ))}
+            </div>
+            <input className="input mt-2" maxLength={300} value={f.timeNote} onChange={set('timeNote')} placeholder="Times and time zone, e.g. Tue/Thu 4–6 pm, GMT+3" aria-label="Times and time zone" />
+          </fieldset>
+          <Field label="Email for our reply" hint="A coach's or team email is best.">
+            <input className="input" type="email" required maxLength={200} value={f.email} onChange={set('email')} />
+          </Field>
+          <label className="flex items-start gap-2 text-sm text-ink-600">
+            <input type="checkbox" required checked={f.adult} onChange={set('adult')} className="mt-1 h-4 w-4 accent-honey-500" />
+            <span>An adult coach or mentor on our team knows about this request and can join the session.</span>
+          </label>
+          {s.error && <Notice kind="warn">{s.error}</Notice>}
+          {s.done && <Notice>Request received. We'll reply by email, usually within a week.</Notice>}
+          <button className="btn-primary" disabled={s.busy}><Send size={16} aria-hidden="true" /> {s.busy ? 'Sending…' : 'Send request'}</button>
         </form>
       </div>
     </div>

@@ -38,7 +38,7 @@ export default function Fund() {
           <div className="card p-5">
             <p className="eyebrow mb-2">Need help starting?</p>
             <p className="text-sm text-ink-600 leading-relaxed">
-              Tell us about your team on the Mentors page and pick "Business & Outreach". We'll talk through local sponsors, used parts, and
+              Request a session on the Find a Mentor page and pick "Fundraising". We'll talk through local sponsors, used parts, and
               whether a starter grant fits.
             </p>
           </div>

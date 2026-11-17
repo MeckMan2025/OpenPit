@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Languages, ArrowRight } from 'lucide-react'
-import { FUNCTIONS_URL, ANON_KEY } from '../lib/supabase'
+import { callMentor } from '../lib/supabase'
+import useAiStatus from '../components/useAiStatus'
 import PageHead from '../components/PageHead'
 import Notice from '../components/Notice'
 
@@ -14,19 +15,13 @@ export default function Translate() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const target = lang === 'Other' ? other.trim() : lang
+  const off = useAiStatus() === 'off'
 
   const go = async () => {
-    if (!text.trim() || !target || busy) return
+    if (!text.trim() || !target || busy || off) return
     setBusy(true); setError(''); setOut('')
     try {
-      if (!FUNCTIONS_URL) throw new Error('Not connected yet.')
-      const res = await fetch(`${FUNCTIONS_URL}/op-mentor`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` },
-        body: JSON.stringify({ mode: 'translate', target, text }),
-      })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data.error || `Translation failed (${res.status}).`)
+      const data = await callMentor({ mode: 'translate', target, text })
       setOut(data.reply)
     } catch (e) { setError(e.message) } finally { setBusy(false) }
   }
@@ -38,6 +33,7 @@ export default function Translate() {
         kept consistent, so "Alliance", "Match", "Scoring Element" mean what the referees mean. It's a help, not an official translation: the
         English manual is the one that counts at an event.
       </PageHead>
+      {off && <div className="mb-4"><Notice kind="warn">Prototype: translation uses the same AI as the AI mentor, which isn't switched on yet, so it can't translate right now.</Notice></div>}
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="card space-y-3 p-4">
           <div className="flex flex-wrap items-end gap-3">
@@ -51,7 +47,7 @@ export default function Translate() {
             <label className="label">English text</label>
             <textarea className="input min-h-[260px] font-mono text-xs" value={text} onChange={(e) => setText(e.target.value)} placeholder="Paste from the game manual…" />
           </div>
-          <button onClick={go} className="btn-primary" disabled={busy || !text.trim() || !target}><Languages size={16} /> {busy ? 'Translating…' : 'Translate'} <ArrowRight size={16} /></button>
+          <button onClick={go} className="btn-primary" disabled={off || busy || !text.trim() || !target}><Languages size={16} /> {busy ? 'Translating…' : 'Translate'} <ArrowRight size={16} /></button>
           {error && <Notice kind="warn">{error}</Notice>}
         </div>
         <div className="card p-4">
